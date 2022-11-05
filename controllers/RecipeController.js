@@ -3,10 +3,9 @@ const Recipe = require("../models/Recipe");
 /** Show the list of Recipes */
 const indexRecipes = (req, res, next) => {
   Recipe.find()
+    .sort("-updatedAt")
     .then((response) => {
-      res.json({
-        response,
-      });
+      res.json(response);
     })
     .catch((error) => {
       res.json({
@@ -19,9 +18,7 @@ const showRecipe = (req, res, next) => {
   let recipeID = req.body.recipeID;
   Recipe.findById(recipeID)
     .then((response) => {
-      res.json({
-        response,
-      });
+      res.json(response);
     })
     .catch((error) => {
       res.json({
@@ -42,9 +39,7 @@ const storeRecipe = (req, res, next) => {
   recipe
     .save()
     .then((response) => {
-      res.json({
-        message: "Recipe added successfully",
-      });
+      res.json(response);
     })
     .catch((error) => {
       res.json({
