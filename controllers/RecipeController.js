@@ -60,10 +60,8 @@ const updateRecipe = (req, res, next) => {
   };
 
   Recipe.findByIdAndUpdate(recipeID, { $set: updateData })
-    .then(() => {
-      res.json({
-        message: "Recipe updated successfully!",
-      });
+    .then((response) => {
+      res.json(response);
     })
     .catch((error) => {
       res.json({
@@ -78,9 +76,7 @@ const removeRecipe = (req, res, next) => {
 
   Recipe.findByIdAndRemove(recipeID)
     .then(() => {
-      res.json({
-        message: "Recipe deleted successfully!",
-      });
+      res.json(true);
     })
     .catch((error) => {
       res.json({
