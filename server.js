@@ -6,7 +6,7 @@ const cors = require("cors");
 
 const RecipeRoute = require("./routes/recipe");
 
-const isDev = true;
+const isDev = false;
 
 const mongoUrl = isDev
   ? "mongodb://localhost:27017/dish-recipes"
