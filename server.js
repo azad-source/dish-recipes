@@ -8,9 +8,11 @@ const RecipeRoute = require("./routes/recipe");
 
 const isDev = false;
 
+const dbName = "dish-recipes";
+
 const mongoUrl = isDev
-  ? "mongodb://localhost:27017/dish-recipes"
-  : "mongodb://83.136.233.139:27017/dish-recipes";
+  ? `mongodb://localhost:27017/${dbName}`
+  : `mongodb://AdminCherry:Krakazyabra222723@83.136.233.139:27017/${dbName}`;
 
 mongoose
   .connect(mongoUrl, {
@@ -38,4 +40,3 @@ app.listen(PORT, () => {
 });
 
 app.use("/api/recipe", RecipeRoute);
-
