@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const dbInfo = require("access");
+const dbInfo = require("./access.ts");
 
 const RecipeRoute = require("./routes/recipe");
 
