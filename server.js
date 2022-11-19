@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const dbInfo = require("./access.ts");
+const dbInfo = require("./access.js");
 
 const domain = "azad-source.online";
 
