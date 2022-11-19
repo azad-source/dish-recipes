@@ -41,6 +41,7 @@ const { user, pass } = dbInfo;
 
 mongoose
   .connect(mongoUrl, {
+    dbName,
     user,
     pass,
     useNewUrlParser: true,
