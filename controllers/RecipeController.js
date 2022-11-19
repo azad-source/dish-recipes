@@ -9,7 +9,7 @@ const indexRecipes = (req, res, next) => {
     })
     .catch((error) => {
       res.json({
-        message: "An error occured!",
+        message: error,
       });
     });
 };
@@ -22,7 +22,7 @@ const showRecipe = (req, res, next) => {
     })
     .catch((error) => {
       res.json({
-        message: "An error occured!",
+        message: error,
       });
     });
 };
@@ -43,7 +43,7 @@ const storeRecipe = (req, res, next) => {
     })
     .catch((error) => {
       res.json({
-        message: "An error occured!",
+        message: error,
       });
     });
 };
@@ -65,7 +65,7 @@ const updateRecipe = (req, res, next) => {
     })
     .catch((error) => {
       res.json({
-        message: "An error occured!",
+        message: error,
       });
     });
 };
@@ -80,7 +80,7 @@ const removeRecipe = (req, res, next) => {
     })
     .catch((error) => {
       res.json({
-        message: "An error occured!",
+        message: error,
       });
     });
 };
