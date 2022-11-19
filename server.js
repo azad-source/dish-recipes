@@ -11,21 +11,21 @@ const dbInfo = require("./access.ts");
 const domain = "azad-source.online";
 
 // Certificate
-// const privateKey = fs.readFileSync(
-//   `/etc/letsencrypt/live/${domain}/privkey.pem`,
-//   "utf8"
-// );
-// const certificate = fs.readFileSync(
-//   `/etc/letsencrypt/live/${domain}/cert.pem`,
-//   "utf8"
-// );
-// const ca = fs.readFileSync(`/etc/letsencrypt/live/${domain}/chain.pem`, "utf8");
+const privateKey = fs.readFileSync(
+  `/etc/letsencrypt/live/${domain}/privkey.pem`,
+  "utf8"
+);
+const certificate = fs.readFileSync(
+  `/etc/letsencrypt/live/${domain}/cert.pem`,
+  "utf8"
+);
+const ca = fs.readFileSync(`/etc/letsencrypt/live/${domain}/chain.pem`, "utf8");
 
-// const credentials = {
-//   key: privateKey,
-//   cert: certificate,
-//   ca: ca,
-// };
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+  ca: ca,
+};
 
 const RecipeRoute = require("./routes/recipe");
 
@@ -64,12 +64,12 @@ app.use(express.static("public"));
 
 // Starting both http & https servers
 const httpServer = http.createServer(app);
-// const httpsServer = https.createServer(credentials, app);
+const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(80, () => {
   console.log("HTTP Server running on port 80");
 });
 
-// httpsServer.listen(443, () => {
-//   console.log("HTTPS Server running on port 443");
-// });
+httpsServer.listen(443, () => {
+  console.log("HTTPS Server running on port 443");
+});
