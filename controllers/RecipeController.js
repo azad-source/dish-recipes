@@ -59,7 +59,7 @@ const updateRecipe = (req, res, next) => {
     ingredients: req.body.ingredients,
   };
 
-  Recipe.findByIdAndUpdate(recipeID, { $set: updateData })
+  Recipe.findByIdAndUpdate(recipeID, { $set: updateData }, { new: true })
     .then((response) => {
       res.json(response);
     })
