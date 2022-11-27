@@ -1,7 +1,7 @@
 const Recipe = require("../models/Recipe");
 
-/** Show the list of Recipes */
-const indexRecipes = (req, res, next) => {
+/** Get list of recipes */
+const getRecipes = (req, res, next) => {
   Recipe.find()
     .sort("-updatedAt")
     .then((response) => {
@@ -14,6 +14,21 @@ const indexRecipes = (req, res, next) => {
     });
 };
 
+/** Get recipe by ID  */
+const getRecipeById = (req, res, next) => {
+  let recipeID = req.body.recipeID;
+  Recipe.findById(recipeID)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((error) => {
+      res.json({
+        message: error,
+      });
+    });
+};
+
+/** Get random */
 const showRecipe = (req, res, next) => {
   let recipeID = req.body.recipeID;
   Recipe.findById(recipeID)
@@ -28,7 +43,7 @@ const showRecipe = (req, res, next) => {
 };
 
 /** Add new recipe */
-const storeRecipe = (req, res, next) => {
+const addRecipe = (req, res, next) => {
   let recipe = new Recipe({
     name: req.body.name,
     preparingTime: req.body.preparingTime,
@@ -86,9 +101,9 @@ const removeRecipe = (req, res, next) => {
 };
 
 module.exports = {
-  indexRecipes,
-  showRecipe,
-  storeRecipe,
+  getRecipes,
+  getRecipeById,
+  addRecipe,
   updateRecipe,
   removeRecipe,
 };
