@@ -28,18 +28,19 @@ const getRecipeById = (req, res, next) => {
     });
 };
 
-/** Get random */
-const showRecipe = (req, res, next) => {
-  let recipeID = req.body.recipeID;
-  Recipe.findById(recipeID)
-    .then((response) => {
-      res.json(response);
-    })
-    .catch((error) => {
-      res.json({
-        message: error,
+/** Get random recipe */
+const getRandomRecipe = (req, res, next) => {
+  Recipe.countDocuments({}, (err, count) => {
+    const random = Math.floor(Math.random() * count);
+    Recipe.findOne()
+      .skip(random)
+      .exec(function (err, response) {
+        res.json(response);
+        if (err) {
+          res.json(err);
+        }
       });
-    });
+  });
 };
 
 /** Add new recipe */
@@ -103,6 +104,7 @@ const removeRecipe = (req, res, next) => {
 module.exports = {
   getRecipes,
   getRecipeById,
+  getRandomRecipe,
   addRecipe,
   updateRecipe,
   removeRecipe,

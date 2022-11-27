@@ -7,46 +7,33 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dbInfo = require("./access.js");
-
-const domain = "azad-source.online";
-
-// Certificate
-const privateKey = fs.readFileSync(
-  `/etc/letsencrypt/live/${domain}/privkey.pem`,
-  "utf8"
-);
-const certificate = fs.readFileSync(
-  `/etc/letsencrypt/live/${domain}/cert.pem`,
-  "utf8"
-);
-const ca = fs.readFileSync(`/etc/letsencrypt/live/${domain}/chain.pem`, "utf8");
-
-const credentials = {
-  key: privateKey,
-  cert: certificate,
-  ca: ca,
-};
-
 const RecipeRoute = require("./routes/recipe");
 
-const isDev = false;
-
+const domain = "azad-source.online";
+const env = process.env.NODE_ENV || "development";
+const isDev = env === "development";
 const dbName = "dish-recipes";
 
-const mongoUrl = isDev
-  ? `mongodb://localhost:27017/${dbName}`
-  : `mongodb://${domain}:27017/${dbName}`; // 83.136.233.139:27017
+let PORT, mongoUrl, dbConfig;
 
-const { user, pass } = dbInfo;
-
-mongoose
-  .connect(mongoUrl, {
+if (isDev) {
+  PORT = 3000;
+  mongoUrl = `mongodb://localhost:27017/${dbName}`;
+  dbConfig = {};
+} else {
+  PORT = 80;
+  mongoUrl = `mongodb://${domain}:27017/${dbName}`; // 83.136.233.139:27017
+  dbConfig = {
     dbName,
-    user,
-    pass,
+    user: dbInfo.user,
+    pass: dbInfo.pass,
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  })
+  };
+}
+
+mongoose
+  .connect(mongoUrl, dbConfig)
   .then(() => {
     console.log("DB Connection Established!");
   })
@@ -65,12 +52,27 @@ app.use(express.static("public"));
 
 // Starting both http & https servers
 const httpServer = http.createServer(app);
-const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(80, () => {
-  console.log("HTTP Server running on port 80");
+httpServer.listen(PORT, () => {
+  console.log(`HTTP Server running on port ${PORT}`);
 });
 
-httpsServer.listen(443, () => {
-  console.log("HTTPS Server running on port 443");
-});
+if (!isDev) {
+  // ----------------- STARTING HTTPS (443) -----------------------------
+  // Certificate
+  const privateKey = `/etc/letsencrypt/live/${domain}/privkey.pem`;
+  const certificate = `/etc/letsencrypt/live/${domain}/cert.pem`;
+  const ca = `/etc/letsencrypt/live/${domain}/chain.pem`;
+
+  const credentials = {
+    key: fs.readFileSync(privateKey, "utf8"),
+    cert: fs.readFileSync(certificate, "utf8"),
+    ca: fs.readFileSync(ca, "utf8"),
+  };
+
+  const httpsServer = https.createServer(credentials, app);
+
+  httpsServer.listen(443, () => {
+    console.log("HTTPS Server running on port 443");
+  });
+}
