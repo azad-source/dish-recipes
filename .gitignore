@@ -1,3 +1,4 @@
 node_modules
 access.js
 public/.well-known
+*.config.js
